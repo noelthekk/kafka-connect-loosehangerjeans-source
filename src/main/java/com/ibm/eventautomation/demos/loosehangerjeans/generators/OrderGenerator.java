@@ -34,8 +34,13 @@ public class OrderGenerator extends Generator<Order> {
 
     /** order regions (e.g. NA, EMEA) will be chosen at random from this list */
     private final List<String> regions;
-    /** order country (e.g. India, France) */
-    private final List<String> countries;
+
+    /** order country codes  for different regions */
+    private final List<String> countryCodesForEMEA;
+    private final List<String> countryCodesForSA;
+    private final List<String> countryCodesForAPAC;
+    private final List<String> countryCodesForANZ;
+    private final List<String> countryCodesForNA;
 
     /** priorities list for orders */
     private final List<String> priorities;
@@ -78,7 +83,13 @@ public class OrderGenerator extends Generator<Order> {
         this.productGenerator = new ProductGenerator(config);
 
         this.regions = config.getList(DatagenSourceConfig.CONFIG_LOCATIONS_REGIONS);
-        this.countries = config.getList(DatagenSourceConfig.CONFIG_LOCATIONS_COUNTRIES);
+
+        this.countryCodesForEMEA = config.getList(DatagenSourceConfig.CONFIG_LOCATIONS_EMEA_COUNTRIES);
+        this.countryCodesForAPAC = config.getList(DatagenSourceConfig.CONFIG_LOCATIONS_APAC_COUNTRIES);
+        this.countryCodesForANZ = config.getList(DatagenSourceConfig.CONFIG_LOCATIONS_ANZ_COUNTRIES);
+        this.countryCodesForNA = config.getList(DatagenSourceConfig.CONFIG_LOCATIONS_NA_COUNTRIES);
+        this.countryCodesForSA = config.getList(DatagenSourceConfig.CONFIG_LOCATIONS_SA_COUNTRIES);
+
         this.storeIDs = config.getList(DatagenSourceConfig.CONFIG_LOCATIONS_STORE_IDS);
         this.minPrice = config.getDouble(DatagenSourceConfig.CONFIG_PRODUCTS_MIN_PRICE);
         this.maxPrice = config.getDouble(DatagenSourceConfig.CONFIG_PRODUCTS_MAX_PRICE);
@@ -102,7 +113,7 @@ public class OrderGenerator extends Generator<Order> {
         double unitPrice = Generators.randomPrice(minPrice, maxPrice);
         String description = productGenerator.generate().getDescription();
         String region = Generators.randomItem(regions);
-        String country = Generators.randomItem(countries);
+        String country = getCountryCode(region);
         String storeID = Generators.randomItem(storeIDs);
         String priority = Generators.randomItem(priorities);
         Customer customer = new Customer(faker);
@@ -130,7 +141,7 @@ public class OrderGenerator extends Generator<Order> {
         double unitPrice = Generators.randomPrice(minPrice, maxPrice);
         String description = productGenerator.generate().getDescription();
         String region = Generators.randomItem(regions);
-        String country = Generators.randomItem(countries);
+        String country = getCountryCode(region);
         String priority = Generators.randomItem(priorities);
         String storeID = Generators.randomItem(storeIDs);
 
@@ -198,7 +209,7 @@ public class OrderGenerator extends Generator<Order> {
         double unitPrice = Generators.randomPrice(minPrice, maxPrice);
         String description = productGenerator.generate().getDescription();
         String region = Generators.randomItem(regions);
-        String country = Generators.randomItem(countries);
+        String country = getCountryCode(region);
         Customer customer = new Customer(faker);
         String priority = Generators.randomItem(priorities);
         String storeID = Generators.randomItem(storeIDs);
@@ -227,4 +238,28 @@ public class OrderGenerator extends Generator<Order> {
     public boolean shouldCancel() {
         return Generators.shouldDo(cancellationRatio);
     }
+
+    /**
+     * Returns the country code of a country belonging to the given region.
+     * 
+     * @return country code of a country.
+     */
+    public String getCountryCode(String region) {
+
+        switch(region) {
+            case "EMEA":
+                return Generators.randomItem(countryCodesForEMEA);
+            case "NA":
+                return Generators.randomItem(countryCodesForNA);
+            case "SA":
+                return Generators.randomItem(countryCodesForSA);
+            case "APAC":
+                return Generators.randomItem(countryCodesForAPAC);
+            case "ANZ":
+                return Generators.randomItem(countryCodesForANZ);
+            default:
+                return new String();
+        }
+
+    } 
 }

@@ -50,8 +50,12 @@ public class DatagenSourceConfig {
     private static final String CONFIG_GROUP_LOCATIONS = "Locations";
     public static final String CONFIG_LOCATIONS_REGIONS    = "locations.regions";
     public static final String CONFIG_LOCATIONS_WAREHOUSES = "locations.warehouses";
-    public static final String CONFIG_LOCATIONS_COUNTRIES = "locations.countries";
-    public static final String CONFIG_LOCATIONS_STORE_IDS = "locations.storeId";
+    public static final String CONFIG_LOCATIONS_EMEA_COUNTRIES = "locations.country.emea";
+    public static final String CONFIG_LOCATIONS_APAC_COUNTRIES = "locations.country.apac";
+    public static final String CONFIG_LOCATIONS_ANZ_COUNTRIES = "locations.country.anz";
+    public static final String CONFIG_LOCATIONS_NA_COUNTRIES = "locations.country.na";
+    public static final String CONFIG_LOCATIONS_SA_COUNTRIES = "locations.country.sa";
+    public static final String CONFIG_LOCATIONS_STORE_IDS = "locations.storeids";
 
     private static final String CONFIG_GROUP_PRODUCTS = "Products";
     public static final String CONFIG_PRODUCTS_SIZES     = "products.sizes";
@@ -274,14 +278,43 @@ public class DatagenSourceConfig {
                     Importance.LOW,
                     "List of warehouses to use for generated locations. Warehouse names cannot contain spaces.",
                     CONFIG_GROUP_LOCATIONS, 2, Width.MEDIUM, "Warehouses")
-        .define(CONFIG_LOCATIONS_COUNTRIES,
+        .define(CONFIG_LOCATIONS_EMEA_COUNTRIES,
                     Type.LIST,
-                    Arrays.asList("AQ", "FR", "AT","AO","CH","DK","DO","GS","GT","CN","IN"),
+                    Arrays.asList("BE","FR","CH","GB","DE"),
                     new ValidTermsList(),
                     Importance.LOW,
-                    "List of countries to use for generated locations. Country names cannot contain spaces",
-                    CONFIG_GROUP_LOCATIONS, 3, Width.MEDIUM, "Countries")
-        .define(CONFIG_LOCATIONS_STORE_IDS,
+                    "List of countries to use for countries in EMEA. Country names cannot contain spaces",
+                    CONFIG_GROUP_LOCATIONS, 3, Width.MEDIUM, "EMEA Countries")
+        .define(CONFIG_LOCATIONS_APAC_COUNTRIES,
+                    Type.LIST,
+                    Arrays.asList("ID","SG","BN","PH"),
+                    new ValidTermsList(),
+                    Importance.LOW,
+                    "List of countries to use for countries in APAC. Country names cannot contain spaces",
+                    CONFIG_GROUP_LOCATIONS, 3, Width.MEDIUM, "APAC Countries")
+        .define(CONFIG_LOCATIONS_ANZ_COUNTRIES,
+                    Type.LIST,
+                    Arrays.asList("AU", "NZ"),
+                    new ValidTermsList(),
+                    Importance.LOW,
+                    "List of countries to use for countries in ANZ. Country names cannot contain spaces",
+                    CONFIG_GROUP_LOCATIONS, 3, Width.MEDIUM, "ANZ Countries")
+        .define(CONFIG_LOCATIONS_NA_COUNTRIES,
+                    Type.LIST,
+                    Arrays.asList("CN", "US","MX"),
+                    new ValidTermsList(),
+                    Importance.LOW,
+                    "List of countries to use for countries in ANZ. Country names cannot contain spaces",
+                    CONFIG_GROUP_LOCATIONS, 3, Width.MEDIUM, "ANZ Countries")
+        .define(CONFIG_LOCATIONS_SA_COUNTRIES,
+                    Type.LIST,
+                    Arrays.asList("PY","BR","UY"),
+                    new ValidTermsList(),
+                    Importance.LOW,
+                    "List of countries to use for countries in SA. Country names cannot contain spaces",
+                    CONFIG_GROUP_LOCATIONS, 3, Width.MEDIUM, "SA Countries")
+        // store ID 
+                    .define(CONFIG_LOCATIONS_STORE_IDS,
                     Type.LIST,
                     Arrays.asList("0168","3254","7293","2358","8764"),
                     new ValidTermsList(),
@@ -296,7 +329,7 @@ public class DatagenSourceConfig {
                 Arrays.asList("normal", "high", "urgent"),
                 new ValidTermsList(),
                 Importance.LOW,
-                "List of priorities for a orders. Must be one of three",
+                "List of priorities for orders. Must be one of three",
                 CONFIG_GROUP_PRIORITIES, 1, Width.MEDIUM, "Priority")
         //
         // How to generate product names

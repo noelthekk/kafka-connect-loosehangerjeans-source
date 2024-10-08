@@ -52,7 +52,7 @@ public class Order extends LoosehangerData {
     /** location of the customer */
     private String region;
 
-    /** country of the customer **/
+    /** country code of the order **/
     private String countrycode;
 
     private String priority;
